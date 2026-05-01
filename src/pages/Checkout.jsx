@@ -1,51 +1,120 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
-import { saveOrder } from "../utilsStorage";
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyp-jPopp_3ZV3vL6p750Zb_1tCKK7IiBT5ruJRUfnrbwUc5qFG8R5DVmycgXiCBg1r/exec";
 
 function Checkout() {
-  const { cart, total, clearCart } = useCart();
-  const [form, setForm] = useState({ customerName: "", phone: "", address: "", paymentMethod: "cash", notes: "" });
-  const [result, setResult] = useState(null);
-  const bitPhone = "0540000000";
+  const { cart, clearCart } = useCart();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const [form, setForm] = useState({
+    customer_name: "",
+    phone: "",
+    address: "",
+    payment_method: "Bit",
+    notes: "",
+  });
 
-  const submitOrder = () => {
-    if (!form.customerName || !form.phone || !form.address) return alert("عبّي الاسم، الهاتف، والعنوان");
-    if (cart.length === 0) return alert("السلة فارغة");
-    const order = saveOrder({ ...form, items: cart, total, bitPhone });
-    setResult(order);
-    clearCart();
+  const [loading, setLoading] = useState(false);
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const submitOrder = async (e) => {
+    e.preventDefault();
+
+    if (!cart.length) return alert("السلة فارغة");
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          ...form,
+          total,
+          items: cart,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("تم إرسال الطلب بنجاح");
+        clearCart();
+        setForm({
+          customer_name: "",
+          phone: "",
+          address: "",
+          payment_method: "Bit",
+          notes: "",
+        });
+      }
+    } catch (err) {
+      alert("صار خطأ أثناء إرسال الطلب");
+    }
+
+    setLoading(false);
   };
 
   return (
     <>
       <Navbar />
-      <section className="page">
-        <h1>إتمام الطلب</h1>
-        {!result ? (
-          <div className="checkout-layout">
-            <div className="checkout-box">
-              <input name="customerName" placeholder="الاسم الكامل" value={form.customerName} onChange={handleChange} />
-              <input name="phone" placeholder="رقم الهاتف" value={form.phone} onChange={handleChange} />
-              <textarea name="address" placeholder="العنوان" value={form.address} onChange={handleChange} />
-              <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange}>
-                <option value="cash">نقدًا عند الاستلام</option>
-                <option value="bit">الدفع عبر Bit</option>
-              </select>
-              <textarea name="notes" placeholder="ملاحظات للطلب" value={form.notes} onChange={handleChange} />
-              <button onClick={submitOrder}>تأكيد الطلب</button>
-            </div>
-            <div className="summary-box"><h2>ملخص الطلب</h2>{cart.map((item) => <p key={item.id}>{item.ar} × {item.quantity}</p>)}<h3>المجموع: {total}₪</h3></div>
-          </div>
-        ) : (
-          <div className="success-box">
-            <h2>تم إرسال الطلب بنجاح</h2><p>رقم الطلب: #{result.id}</p><p>المبلغ: {result.total}₪</p>
-            {result.paymentMethod === "bit" ? <div className="bit-payment"><h3>الدفع عبر Bit</h3><p>ادفع على الرقم:</p><strong>{result.bitPhone}</strong><p>اكتب في ملاحظة الدفع: طلب رقم {result.id}</p><p>حالة الدفع: بانتظار تأكيد الإدارة</p></div> : <p>طريقة الدفع: نقدًا عند الاستلام</p>}
-          </div>
-        )}
-      </section>
+
+      <main className="checkout-page">
+        <div className="checkout-card">
+          <h1>إتمام الطلب</h1>
+          <p>الدفع نقدًا أو عبر Bit</p>
+
+          <form onSubmit={submitOrder}>
+            <input
+              type="text"
+              placeholder="الاسم"
+              value={form.customer_name}
+              onChange={(e) =>
+                setForm({ ...form, customer_name: e.target.value })
+              }
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="رقم الهاتف"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="العنوان"
+              value={form.address}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
+              required
+            />
+
+            <select
+              value={form.payment_method}
+              onChange={(e) =>
+                setForm({ ...form, payment_method: e.target.value })
+              }
+            >
+              <option value="Bit">Bit</option>
+              <option value="Cash">Cash</option>
+            </select>
+
+            <textarea
+              placeholder="ملاحظات"
+              rows="4"
+              value={form.notes}
+              onChange={(e) => setForm({ ...form, notes: e.target.value })}
+            />
+
+            <button type="submit" disabled={loading}>
+              {loading ? "جاري الإرسال..." : `تأكيد الطلب • ${total}₪`}
+            </button>
+          </form>
+        </div>
+      </main>
     </>
   );
 }
