@@ -264,3 +264,121 @@
     height: 300px;
   }
 }
+.hero-floating-card {
+  position: absolute;
+  left: 7%;
+  bottom: 70px;
+  width: 270px;
+  padding: 12px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(231,194,125,.35);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  animation: floatCard 4.5s ease-in-out infinite;
+}
+
+.hero-floating-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.hero-floating-card span {
+  display: block;
+  padding: 12px 5px 4px;
+  color: #e7c27d;
+  font-weight: 900;
+  text-align: center;
+}
+
+.home-video-section {
+  padding: 90px 7%;
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 50px;
+  align-items: center;
+  background:
+    radial-gradient(circle at top right, rgba(231,194,125,.24), transparent 35%),
+    linear-gradient(135deg, #fff8ef, #f8ead8);
+}
+
+.video-text h2 {
+  font-size: clamp(36px, 5vw, 62px);
+  color: #7a2d2d;
+  margin: 12px 0;
+}
+
+.video-text span {
+  font-size: 20px;
+  line-height: 1.9;
+  color: #36555c;
+}
+
+.video-3d-card {
+  width: min(560px, 100%);
+  justify-self: center;
+  padding: 13px;
+  border-radius: 36px;
+  background: linear-gradient(145deg, #ffffff, #e7c27d);
+  box-shadow:
+    0 38px 90px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.8);
+  transform: perspective(1000px) rotateY(-9deg) rotateX(4deg);
+  transition: .4s ease;
+  position: relative;
+}
+
+.video-3d-card::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 42px;
+  background: linear-gradient(135deg, rgba(231,194,125,.55), transparent);
+  filter: blur(18px);
+  z-index: -1;
+}
+
+.video-3d-card:hover {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-10px);
+}
+
+.video-3d-card video {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  display: block;
+  border-radius: 28px;
+}
+
+@keyframes floatCard {
+  0%, 100% {
+    transform: perspective(900px) rotateY(10deg) translateY(0);
+  }
+  50% {
+    transform: perspective(900px) rotateY(4deg) translateY(-16px);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-floating-card {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  .home-video-section {
+    grid-template-columns: 1fr;
+  }
+
+  .video-3d-card {
+    transform: none;
+  }
+
+  .video-3d-card video {
+    height: 260px;
+  }
+}

@@ -2,8 +2,7 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbyp-jPopp_3ZV3vL6p750Zb_1tCKK7IiBT5ruJRUfnrbwUc5qFG8R5DVmycgXiCBg1r/exec";
+const API_URL = "/api/checkout";
 
 function Checkout() {
   const { cart, clearCart } = useCart();
@@ -17,18 +16,28 @@ function Checkout() {
   });
 
   const [loading, setLoading] = useState(false);
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   const submitOrder = async (e) => {
     e.preventDefault();
 
-    if (!cart.length) return alert("السلة فارغة");
+    if (!cart.length) {
+      alert("السلة فارغة");
+      return;
+    }
 
     setLoading(true);
 
     try {
       const res = await fetch(API_URL, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           ...form,
           total,
@@ -40,7 +49,9 @@ function Checkout() {
 
       if (data.success) {
         alert("تم إرسال الطلب بنجاح");
+
         clearCart();
+
         setForm({
           customer_name: "",
           phone: "",
@@ -48,8 +59,11 @@ function Checkout() {
           payment_method: "Bit",
           notes: "",
         });
+      } else {
+        alert("فشل إرسال الطلب");
       }
     } catch (err) {
+      console.error(err);
       alert("صار خطأ أثناء إرسال الطلب");
     }
 
@@ -80,7 +94,9 @@ function Checkout() {
               type="text"
               placeholder="رقم الهاتف"
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, phone: e.target.value })
+              }
               required
             />
 
@@ -88,7 +104,9 @@ function Checkout() {
               type="text"
               placeholder="العنوان"
               value={form.address}
-              onChange={(e) => setForm({ ...form, address: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, address: e.target.value })
+              }
               required
             />
 
@@ -106,7 +124,9 @@ function Checkout() {
               placeholder="ملاحظات"
               rows="4"
               value={form.notes}
-              onChange={(e) => setForm({ ...form, notes: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, notes: e.target.value })
+              }
             />
 
             <button type="submit" disabled={loading}>
