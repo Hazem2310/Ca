@@ -60,3 +60,207 @@
     height: 260px;
   }
 }
+.luxury-hero {
+  min-height: 94vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 70px 7%;
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-hero::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: rgba(231, 194, 125, 0.18);
+  filter: blur(70px);
+  left: -120px;
+  bottom: -120px;
+}
+
+.hero-glass {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  padding: 42px;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(231, 194, 125, 0.35);
+  box-shadow: 0 35px 90px rgba(0,0,0,.35);
+  backdrop-filter: blur(14px);
+  color: white;
+  transform: perspective(1000px) rotateY(-4deg);
+  animation: floatHero 5s ease-in-out infinite;
+}
+
+.gold-label {
+  color: #e7c27d;
+  letter-spacing: 4px;
+  font-weight: 900;
+}
+
+.hero-glass h1 {
+  font-size: clamp(45px, 7vw, 88px);
+  line-height: 1.05;
+  margin: 12px 0;
+}
+
+.hero-desc {
+  font-size: 21px;
+  line-height: 2;
+  color: #f8eee0;
+}
+
+.story-section {
+  padding: 95px 7%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+  align-items: center;
+  background:
+    radial-gradient(circle at top right, rgba(231,194,125,.22), transparent 35%),
+    #fff8ef;
+}
+
+.story-text h2,
+.premium-featured h2,
+.luxury-gallery-section h2 {
+  font-size: clamp(36px, 5vw, 60px);
+  color: #7a2d2d;
+  margin: 12px 0;
+}
+
+.story-text p {
+  font-size: 19px;
+  line-height: 2;
+  color: #244952;
+}
+
+.story-3d-images {
+  position: relative;
+  min-height: 520px;
+}
+
+.story-3d-images img {
+  position: absolute;
+  width: 70%;
+  height: 390px;
+  object-fit: cover;
+  border-radius: 36px;
+  box-shadow: 0 40px 90px rgba(0,0,0,.22);
+  border: 6px solid #fff7ec;
+  transition: .45s ease;
+}
+
+.story-3d-images img:first-child {
+  right: 0;
+  top: 0;
+  transform: perspective(1000px) rotateY(-10deg) rotateZ(1deg);
+  animation: floatImg1 5s ease-in-out infinite;
+}
+
+.story-3d-images img:last-child {
+  left: 0;
+  bottom: 0;
+  transform: perspective(1000px) rotateY(10deg) rotateZ(-2deg);
+  animation: floatImg2 5.5s ease-in-out infinite;
+}
+
+.story-3d-images img:hover {
+  transform: scale(1.04) rotateY(0deg);
+  z-index: 3;
+}
+
+.luxury-food-card {
+  transform-style: preserve-3d;
+}
+
+.luxury-food-card:hover {
+  transform: perspective(900px) rotateX(5deg) translateY(-12px) scale(1.02);
+}
+
+.moving-gallery {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr 1fr;
+  gap: 24px;
+}
+
+.moving-gallery img {
+  width: 100%;
+  height: 430px;
+  object-fit: cover;
+  border-radius: 36px;
+  box-shadow: 0 35px 80px rgba(0,0,0,.18);
+  border: 5px solid #fff7ec;
+  transition: .4s ease;
+}
+
+.moving-gallery img:nth-child(1) {
+  animation: floatImg1 5s ease-in-out infinite;
+}
+
+.moving-gallery img:nth-child(2) {
+  animation: floatImg2 5.5s ease-in-out infinite;
+}
+
+.moving-gallery img:nth-child(3) {
+  animation: floatImg3 6s ease-in-out infinite;
+}
+
+.moving-gallery img:hover {
+  transform: scale(1.04) translateY(-8px);
+}
+
+@keyframes floatHero {
+  0%, 100% { transform: perspective(1000px) rotateY(-4deg) translateY(0); }
+  50% { transform: perspective(1000px) rotateY(-1deg) translateY(-12px); }
+}
+
+@keyframes floatImg1 {
+  0%, 100% { transform: perspective(1000px) rotateY(-10deg) translateY(0); }
+  50% { transform: perspective(1000px) rotateY(-6deg) translateY(-13px); }
+}
+
+@keyframes floatImg2 {
+  0%, 100% { transform: perspective(1000px) rotateY(10deg) translateY(0); }
+  50% { transform: perspective(1000px) rotateY(6deg) translateY(14px); }
+}
+
+@keyframes floatImg3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@media (max-width: 900px) {
+  .hero-glass {
+    transform: none;
+    padding: 28px;
+  }
+
+  .story-section,
+  .moving-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .story-3d-images {
+    min-height: auto;
+    display: grid;
+    gap: 20px;
+  }
+
+  .story-3d-images img {
+    position: static;
+    width: 100%;
+    height: 300px;
+    transform: none !important;
+  }
+
+  .moving-gallery img {
+    height: 300px;
+  }
+}
