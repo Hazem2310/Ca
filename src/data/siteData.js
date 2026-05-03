@@ -77,10 +77,10 @@ export const defaultMenuSections = [
     titleAr: "مشروبات",
     titleHe: "שתייה",
     items: [
-      { id: 29, ar: "مياه معدنية", he: "מים מינרלים", price: 10, image: "/images/drinks.jpg" },
+      { id: 29, ar: "مياه معدنية", he: "מים מינרלים", price: 10, image: "/images/water.jpg" },
       { id: 30, ar: "كوكا كولا", he: "קוקה קולה", price: 12, image: "/images/cola.jpg" },
       { id: 31, ar: "سبرايت", he: "ספרייט", price: 12, image: "/images/drinks.jpg" },
-      { id: 32, ar: "فانتا", he: "פאנטה", price: 12, image: "/images/drinks.jpg" },
+      { id: 32, ar: "فانتا", he: "פאנטה", price: 12, image: "/images/fanta.jpg" },
       { id: 33, ar: "كأس ليمونادا", he: "כוס לימונדה", price: 15, image: "/images/lemonade.jpg" },
       { id: 34, ar: "إبريق ليمونادا", he: "קנקן לימונדה", price: 35, image: "/images/lemonade.jpg" },
       { id: 35, ar: "مشروب طاقة XL", he: "XL", price: 15, image: "/images/drinks.jpg" }
