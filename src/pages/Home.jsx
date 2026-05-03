@@ -5,44 +5,65 @@ import { homeImages, menuSections, translations } from "../data/siteData";
 
 function Home() {
   const [lang, setLang] = useState("ar");
-  const t = translations[lang];
+  const t = translations?.[lang] || translations?.ar;
 
-  const featured = menuSections.flatMap((s) => s.items).slice(20, 28);
+  const allItems = menuSections.flatMap((s) => s.items);
+
+  const signatureItems = [
+    allItems.find((x) => x.ar.includes("موزات")),
+    allItems.find((x) => x.ar.includes("شرمس")),
+    allItems.find((x) => x.ar.includes("شقف خروف")),
+  ].filter(Boolean);
 
   return (
     <div className={lang === "en" ? "ltr" : "rtl"}>
       <Navbar lang={lang} setLang={setLang} />
 
       <section
-        className="black-gold-hero"
+        className="fire-home-hero"
         style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,.66), rgba(0,0,0,.88)), url(${homeImages.hero})`,
+          backgroundImage: `linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.9)), url(${homeImages.hero})`,
         }}
       >
-        <div className="gold-orb orb-one"></div>
-        <div className="gold-orb orb-two"></div>
+        <div className="fire-glow one"></div>
+        <div className="fire-glow two"></div>
 
-        <div className="hero-luxury-content">
-          <p className="luxury-label">CASABLANCA RESTAURANT</p>
-          <h1>{t.heroTitle}</h1>
-          <p>{t.heroText}</p>
+        <div className="fire-hero-content">
+          <img src="/images/logo.png" alt="Casablanca Logo" className="hero-logo" />
+
+          <p className="gold-label">CASABLANCA RESTAURANT</p>
+          <h1>كازابلانكا — تجربة فاخرة بطعم شرقي أصيل</h1>
+          <p>
+            مشاوي، أسماك، فواكه بحر، مقبلات وحلويات تُحضّر بعناية لتمنحكم
+            تجربة طعام راقية لا تُنسى.
+          </p>
 
           <div className="hero-buttons">
-            <Link to="/menu" className="gold-btn">
-              {t.orderNow}
-            </Link>
-            <Link to="/menu" className="outline-gold-btn">
-              {t.exploreMenu}
-            </Link>
+            <Link to="/menu" className="gold-btn">شاهد المنيو</Link>
+            <Link to="/cart" className="outline-gold-btn">سلة الطلبات</Link>
           </div>
         </div>
+      </section>
 
-        <div className="floating-food-stage">
-          {featured.slice(0, 3).map((item, index) => (
-            <div className={`floating-food food-${index + 1}`} key={item.id}>
-              <img src={item.image} alt={item.ar} />
-              <h3>{lang === "he" ? item.he : item.ar}</h3>
-              <strong>{item.price}₪</strong>
+      <section className="signature-fire-section">
+        <p className="gold-label center">SIGNATURE DISHES</p>
+        <h2>وجبات مميزة</h2>
+        <span className="section-subtitle">
+          أشهر اختيارات كازابلانكا بتقديم فاخر وصور ثلاثية الحركة
+        </span>
+
+        <div className="signature-fire-grid">
+          {signatureItems.map((item, index) => (
+            <div className={`fire-dish-card dish-${index + 1}`} key={item.id}>
+              <div className="fire-dish-img">
+                <img src={item.image} alt={item.ar} />
+              </div>
+
+              <div className="fire-dish-info">
+                <h3>{item.ar}</h3>
+                <p>{item.he}</p>
+                <strong>{item.price}₪</strong>
+              </div>
             </div>
           ))}
         </div>
@@ -50,39 +71,17 @@ function Home() {
 
       <section className="premium-story">
         <div className="story-copy">
-          <p className="luxury-label">OUR STORY</p>
-          <h2>{t.storyTitle}</h2>
-          <p>{t.storyText}</p>
-          <Link to="/menu" className="dark-gold-btn">
-            {t.exploreMenu}
-          </Link>
+          <p className="gold-label">OUR STORY</p>
+          <h2>رحلة قصيرة إلى الشرق</h2>
+          <p>
+            مطعم كازابلانكا يأخذكم إلى مطبخ عربي شرقي فاخر، يجمع بين
+            الأصالة، النكهة، الأجواء الراقية والخدمة الدافئة.
+          </p>
+          <Link to="/menu" className="dark-gold-btn">اكتشف الأطباق</Link>
         </div>
 
         <div className="story-video-card">
           <video src="/videos/home-video.mp4" autoPlay muted loop playsInline />
-        </div>
-      </section>
-
-      <section className="signature-section">
-        <p className="luxury-label center">{t.signature}</p>
-        <h2>{t.signature}</h2>
-
-        <div className="signature-3d-grid">
-          {featured.slice(0, 4).map((item, index) => (
-            <div className={`signature-card delay-${index}`} key={item.id}>
-              <div className="signature-img">
-                <img src={item.image} alt={item.ar} />
-              </div>
-
-              <div className="signature-info">
-                <h3>
-                  {lang === "he" ? item.he : lang === "en" ? item.ar : item.ar}
-                </h3>
-                <p>{lang === "he" ? item.ar : item.he}</p>
-                <strong>{item.price}₪</strong>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -92,16 +91,25 @@ function Home() {
         ))}
       </section>
 
-      <footer className="luxury-footer">
-        <div>
+      <footer className="fire-footer">
+        <div className="footer-brand">
+          <img src="/images/logo.png" alt="Casablanca Logo" />
           <h2>CASABLANCA</h2>
-          <p>{t.footerText}</p>
+          <p>طعم شرقي فاخر وتجربة لا تُنسى.</p>
+        </div>
+
+        <div className="footer-contact">
+          <h3>تواصل معنا</h3>
+          <p>📞 0546577363</p>
+          <p>📞 0545681289</p>
+          <p>☎ 046209850</p>
+          <p>📸 Instagram: @casablanca</p>
         </div>
 
         <div className="footer-links">
-          <Link to="/">{t.home}</Link>
-          <Link to="/menu">{t.menu}</Link>
-          <Link to="/cart">{t.cart}</Link>
+          <Link to="/">الرئيسية</Link>
+          <Link to="/menu">المنيو</Link>
+          <Link to="/cart">السلة</Link>
         </div>
 
         <span>© 2026 Casablanca Restaurant. All rights reserved.</span>

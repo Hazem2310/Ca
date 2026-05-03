@@ -92,7 +92,7 @@ export const defaultMenuSections = [
     titleHe: "קינוחים",
     items: [
       { id: 36, ar: "كنافة بيتية", he: "כנאפה ביתית", price: 30, image: "/images/knafeh.jpg" },
-      { id: 37, ar: "مهلبية / سحلب", he: "מהלבי / סחלב", price: 20, image: "/images/dessert.jpg" },
+      { id: 37, ar: "مهلبية / سحلب", he: "מהלבי / סחלב", price: 20, image: "/images/dessert1.jpg" },
       { id: 38, ar: "رز بحليب", he: "אורז עם חלב", price: 30, image: "/images/dessert.jpg" }
     ]
     
@@ -128,8 +128,8 @@ export const defaultMenuSections = [
     },
     {
       id: 43,
-      ar: "شرمس / جمبري",
-      he: "שרימפס",
+      ar: "شرمس /كلماري",
+      he: "שרימס/קלאמרי",
       price: 120,
       image: "/images/shrimp.jpg",
       desc: "جمبري طازج بتتبيلة مميزة"
